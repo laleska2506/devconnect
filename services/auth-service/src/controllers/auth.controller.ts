@@ -13,6 +13,10 @@ interface AuthenticatedRequest extends ExpressRequest {
   };
 }
 
+/**
+ * Auth Controller - Handles authentication endpoints
+ * @devconnect/auth-service
+ */
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
