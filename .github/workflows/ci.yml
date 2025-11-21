@@ -24,7 +24,13 @@ jobs:
           version: 8
 
       - name: Install dependencies
-        run: pnpm install
+        run: |
+          if [ -f "pnpm-lock.yaml" ]; then
+            pnpm install --frozen-lockfile
+          else
+            echo "⚠️ No pnpm-lock.yaml found, installing without frozen lockfile"
+            pnpm install
+          fi
 
       - name: Lint
         run: pnpm lint
@@ -33,8 +39,8 @@ jobs:
         run: pnpm test
 
       - name: Security audit
-        run: pnpm audit || true   # para que no rompa el build en el MVP
+        run: pnpm audit --audit-level=moderate || true
+        continue-on-error: true
 
       - name: Build
         run: pnpm build
-
