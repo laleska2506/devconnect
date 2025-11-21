@@ -39,8 +39,9 @@ const Login = () => {
         {!isLogin && (
           <>
             <div className="form-group">
-              <label>Name</label>
+              <label htmlFor="name">Name</label>
               <input
+                id="name"
                 type="text"
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -48,8 +49,9 @@ const Login = () => {
               />
             </div>
             <div className="form-group">
-              <label>Role</label>
+              <label htmlFor="role">Role</label>
               <select
+                id="role"
                 value={formData.role}
                 onChange={(e) => setFormData({ ...formData, role: e.target.value })}
               >
@@ -60,8 +62,9 @@ const Login = () => {
           </>
         )}
         <div className="form-group">
-          <label>Email</label>
+          <label htmlFor="email">Email</label>
           <input
+            id="email"
             type="email"
             value={formData.email}
             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
@@ -69,8 +72,9 @@ const Login = () => {
           />
         </div>
         <div className="form-group">
-          <label>Password</label>
+          <label htmlFor="password">Password</label>
           <input
+            id="password"
             type="password"
             value={formData.password}
             onChange={(e) => setFormData({ ...formData, password: e.target.value })}
