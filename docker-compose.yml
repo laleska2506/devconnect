@@ -1,0 +1,143 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: devconnect-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: devconnect
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  auth-service:
+    build:
+      context: .
+      dockerfile: ./services/auth-service/Dockerfile
+    container_name: devconnect-auth-service
+    ports:
+      - "3001:3001"
+    environment:
+      PORT: 3001
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_NAME: devconnect
+      JWT_SECRET: dev-secret-change-in-production
+      NODE_ENV: development
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - devconnect-network
+
+  profiles-service:
+    build:
+      context: .
+      dockerfile: ./services/profiles-service/Dockerfile
+    container_name: devconnect-profiles-service
+    ports:
+      - "3002:3002"
+    environment:
+      PORT: 3002
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_NAME: devconnect
+      JWT_SECRET: dev-secret-change-in-production
+      NODE_ENV: development
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - devconnect-network
+
+  projects-service:
+    build:
+      context: .
+      dockerfile: ./services/projects-service/Dockerfile
+    container_name: devconnect-projects-service
+    ports:
+      - "3003:3003"
+    environment:
+      PORT: 3003
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_NAME: devconnect
+      JWT_SECRET: dev-secret-change-in-production
+      NODE_ENV: development
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - devconnect-network
+
+  matching-service:
+    build:
+      context: .
+      dockerfile: ./services/matching-service/Dockerfile
+    container_name: devconnect-matching-service
+    ports:
+      - "3004:3004"
+    environment:
+      PORT: 3004
+      NODE_ENV: development
+    networks:
+      - devconnect-network
+
+  payments-service:
+    build:
+      context: .
+      dockerfile: ./services/payments-service/Dockerfile
+    container_name: devconnect-payments-service
+    ports:
+      - "3005:3005"
+    environment:
+      PORT: 3005
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_NAME: devconnect
+      NODE_ENV: development
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - devconnect-network
+
+  frontend:
+    build:
+      context: .
+      dockerfile: ./frontend/Dockerfile
+    container_name: devconnect-frontend
+    ports:
+      - "3000:80"
+    environment:
+      VITE_API_BASE_URL: http://localhost:3001/api
+    depends_on:
+      - auth-service
+      - profiles-service
+      - projects-service
+    networks:
+      - devconnect-network
+
+volumes:
+  postgres_data:
+
+networks:
+  devconnect-network:
+    driver: bridge
+

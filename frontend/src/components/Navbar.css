@@ -1,0 +1,41 @@
+.navbar {
+  background-color: #343a40;
+  color: white;
+  padding: 15px 0;
+  margin-bottom: 20px;
+}
+
+.navbar-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar-brand {
+  font-size: 24px;
+  font-weight: bold;
+  color: white;
+  text-decoration: none;
+}
+
+.navbar-menu {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.navbar-menu a {
+  color: white;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+
+.navbar-menu a:hover {
+  opacity: 0.8;
+}
+
+.navbar-user {
+  color: #ccc;
+  font-size: 14px;
+}
+
