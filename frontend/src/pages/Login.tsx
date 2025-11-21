@@ -25,8 +25,9 @@ const Login = () => {
         await register(formData.name, formData.email, formData.password, formData.role);
       }
       navigate('/projects');
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'An error occurred');
+    } catch (err) {
+      const error = err as { response?: { data?: { message?: string } } };
+      setError(error.response?.data?.message || 'An error occurred');
     }
   };
 

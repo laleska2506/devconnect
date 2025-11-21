@@ -3,24 +3,24 @@ import { Entity, Column, PrimaryColumn, CreateDateColumn, UpdateDateColumn } fro
 @Entity('profiles')
 export class Profile {
   @PrimaryColumn('uuid')
-  userId: string;
+  userId!: string;
 
   @Column({ type: 'text', nullable: true })
-  bio: string;
+  bio?: string;
 
   @Column({ type: 'varchar', array: true, nullable: true })
-  skills: string[];
+  skills?: string[];
 
   @Column({ name: 'hourly_rate', type: 'decimal', precision: 10, scale: 2, nullable: true })
-  hourlyRate: number;
+  hourlyRate?: number;
 
   @Column({ type: 'decimal', precision: 3, scale: 2, default: 0 })
-  rating: number;
+  rating!: number;
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
-  createdAt: Date;
+  createdAt!: Date;
 
   @UpdateDateColumn({ name: 'updated_at', type: 'timestamp' })
-  updatedAt: Date;
+  updatedAt!: Date;
 }
 

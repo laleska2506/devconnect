@@ -14,24 +14,24 @@ export enum PaymentStatus {
 @Entity('payments')
 export class Payment {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id!: string;
 
   @Column({ name: 'contract_id', type: 'uuid' })
-  contractId: string;
+  contractId!: string;
 
   @Column({ name: 'milestone_id', type: 'uuid' })
-  milestoneId: string;
+  milestoneId!: string;
 
   @Column({ type: 'decimal', precision: 10, scale: 2 })
-  amount: number;
+  amount!: number;
 
   @Column({ type: 'enum', enum: PaymentStatus, default: PaymentStatus.PENDING })
-  status: PaymentStatus;
+  status!: PaymentStatus;
 
   @Column({ name: 'provider_tx_id', type: 'varchar', length: 255, nullable: true })
-  providerTxId: string | null;
+  providerTxId!: string | null;
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
-  createdAt: Date;
+  createdAt!: Date;
 }
 

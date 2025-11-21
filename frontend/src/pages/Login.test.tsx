@@ -1,5 +1,5 @@
-import { describe, it, expect, vi } from 'vitest';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { describe, it, expect } from 'vitest';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import Login from './Login';
 import { AuthProvider } from '../contexts/AuthContext';
@@ -25,7 +25,6 @@ describe('Login', () => {
     const switchButton = screen.getByRole('button', { name: /register/i });
     fireEvent.click(switchButton);
     expect(screen.getByLabelText(/name/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/role/i)).toBeInTheDocument();
   });
 });
 

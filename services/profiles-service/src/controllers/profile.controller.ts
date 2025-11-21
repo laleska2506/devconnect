@@ -8,9 +8,24 @@ import {
   UseGuards,
   Request,
 } from '@nestjs/common';
+import { Request as ExpressRequest } from 'express';
 import { ProfileService } from '../services/profile.service';
 import { UpdateProfileDto } from '../dto/update-profile.dto';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
+
+interface AuthenticatedRequest extends ExpressRequest {
+  user: {
+    userId: string;
+    email: string;
+    role: string;
+  };
+}
+
+interface ProfileFilters {
+  skills?: string[];
+  role?: string;
+  minRating?: number;
+}
 
 @Controller('profiles')
 export class ProfileController {
@@ -30,7 +45,7 @@ export class ProfileController {
   async updateProfile(
     @Param('id') id: string,
     @Body() dto: UpdateProfileDto,
-    @Request() req: any
+    @Request() req: AuthenticatedRequest
   ) {
     return this.profileService.updateProfile(id, req.user.userId, dto);
   }
@@ -41,7 +56,7 @@ export class ProfileController {
     @Query('role') role?: string,
     @Query('min_rating') minRating?: string
   ) {
-    const filters: any = {};
+    const filters: ProfileFilters = {};
     if (skills) {
       filters.skills = skills.split(',').map((s) => s.trim());
     }

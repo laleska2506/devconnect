@@ -16,30 +16,30 @@ export enum ProjectStatus {
 @Entity('projects')
 export class Project {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id!: string;
 
   @Column({ name: 'client_id', type: 'uuid' })
-  clientId: string;
+  clientId!: string;
 
   @Column({ type: 'varchar', length: 255 })
-  title: string;
+  title!: string;
 
   @Column({ type: 'text' })
-  description: string;
+  description!: string;
 
   @Column({ name: 'budget_min', type: 'decimal', precision: 10, scale: 2 })
-  budgetMin: number;
+  budgetMin!: number;
 
   @Column({ name: 'budget_max', type: 'decimal', precision: 10, scale: 2 })
-  budgetMax: number;
+  budgetMax!: number;
 
   @Column({ type: 'enum', enum: ProjectStatus, default: ProjectStatus.OPEN })
-  status: ProjectStatus;
+  status!: ProjectStatus;
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
-  createdAt: Date;
+  createdAt!: Date;
 
   @UpdateDateColumn({ name: 'updated_at', type: 'timestamp' })
-  updatedAt: Date;
+  updatedAt!: Date;
 }
 

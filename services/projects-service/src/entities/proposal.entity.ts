@@ -15,27 +15,27 @@ export enum ProposalStatus {
 @Entity('proposals')
 export class Proposal {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id!: string;
 
   @Column({ name: 'project_id', type: 'uuid' })
-  projectId: string;
+  projectId!: string;
 
   @Column({ name: 'freelancer_id', type: 'uuid' })
-  freelancerId: string;
+  freelancerId!: string;
 
   @Column({ type: 'text' })
-  message: string;
+  message!: string;
 
   @Column({ type: 'decimal', precision: 10, scale: 2 })
-  amount: number;
+  amount!: number;
 
   @Column({ type: 'enum', enum: ProposalStatus, default: ProposalStatus.PENDING })
-  status: ProposalStatus;
+  status!: ProposalStatus;
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
-  createdAt: Date;
+  createdAt!: Date;
 
   @UpdateDateColumn({ name: 'updated_at', type: 'timestamp' })
-  updatedAt: Date;
+  updatedAt!: Date;
 }
 

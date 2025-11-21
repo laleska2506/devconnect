@@ -32,8 +32,38 @@ export const authApi = {
   },
 };
 
+interface ProjectFilters {
+  status?: string;
+  budget_min?: number;
+  budget_max?: number;
+}
+
+interface CreateProjectData {
+  title: string;
+  description: string;
+  budgetMin: number;
+  budgetMax: number;
+}
+
+interface ProposalData {
+  message: string;
+  amount: number;
+}
+
+interface UpdateProfileData {
+  bio?: string;
+  skills?: string[];
+  hourlyRate?: number;
+}
+
+interface ProfileFilters {
+  skills?: string;
+  role?: string;
+  min_rating?: number;
+}
+
 export const projectsApi = {
-  list: async (filters?: any) => {
+  list: async (filters?: ProjectFilters) => {
     const response = await apiClient.get('/projects', { params: filters });
     return response.data;
   },
@@ -41,11 +71,11 @@ export const projectsApi = {
     const response = await apiClient.get(`/projects/${id}`);
     return response.data;
   },
-  create: async (data: any) => {
+  create: async (data: CreateProjectData) => {
     const response = await apiClient.post('/projects', data);
     return response.data;
   },
-  apply: async (projectId: string, data: any) => {
+  apply: async (projectId: string, data: ProposalData) => {
     const response = await apiClient.post(`/projects/${projectId}/apply`, data);
     return response.data;
   },
@@ -56,11 +86,11 @@ export const profilesApi = {
     const response = await apiClient.get(`/profiles/${id}`);
     return response.data;
   },
-  update: async (id: string, data: any) => {
+  update: async (id: string, data: UpdateProfileData) => {
     const response = await apiClient.put(`/profiles/${id}`, data);
     return response.data;
   },
-  search: async (filters?: any) => {
+  search: async (filters?: ProfileFilters) => {
     const response = await apiClient.get('/profiles', { params: filters });
     return response.data;
   },

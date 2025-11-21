@@ -8,11 +8,26 @@ import {
   UseGuards,
   Request,
 } from '@nestjs/common';
+import { Request as ExpressRequest } from 'express';
 import { ProjectService } from '../services/project.service';
 import { CreateProjectDto } from '../dto/create-project.dto';
 import { CreateProposalDto } from '../dto/create-proposal.dto';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
 import { ProjectStatus } from '../entities/project.entity';
+
+interface AuthenticatedRequest extends ExpressRequest {
+  user: {
+    userId: string;
+    email: string;
+    role: string;
+  };
+}
+
+interface ProjectFilters {
+  status?: ProjectStatus;
+  budgetMin?: number;
+  budgetMax?: number;
+}
 
 @Controller('projects')
 export class ProjectController {
@@ -20,7 +35,7 @@ export class ProjectController {
 
   @Post()
   @UseGuards(JwtAuthGuard)
-  async createProject(@Body() dto: CreateProjectDto, @Request() req: any) {
+  async createProject(@Body() dto: CreateProjectDto, @Request() req: AuthenticatedRequest) {
     return this.projectService.createProject(req.user.userId, dto);
   }
 
@@ -35,7 +50,7 @@ export class ProjectController {
     @Query('budget_min') budgetMin?: string,
     @Query('budget_max') budgetMax?: string
   ) {
-    const filters: any = {};
+    const filters: ProjectFilters = {};
     if (status) {
       filters.status = status;
     }
@@ -53,7 +68,7 @@ export class ProjectController {
   async applyToProject(
     @Param('id') projectId: string,
     @Body() dto: CreateProposalDto,
-    @Request() req: any
+    @Request() req: AuthenticatedRequest
   ) {
     return this.projectService.createProposal(projectId, req.user.userId, dto);
   }
